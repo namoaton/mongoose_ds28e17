@@ -74,9 +74,6 @@ void DS28E17Rmt::begin(void) {
 
   while (_ow->search(deviceAddress)) {
     if (validAddress(deviceAddress)) {
-      if (!_parasite && readPowerSupply(deviceAddress)) {
-        _parasite = true;
-      }
       _devices++;
     }
   }
