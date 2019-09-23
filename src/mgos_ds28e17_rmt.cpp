@@ -1,8 +1,8 @@
 #include <mgos.h>
-#include "mgos_d28e17_rmt.h"
+#include "mgos_ds28e17_rmt.h"
 #include "OnewireRmt.h"
 
-Ds28e17Rmt *mgos_ds28e17_rmt_create(OnewireRmt *ow) {
+DS28E17Rmt *mgos_ds28e17_rmt_create(OnewireRmt *ow) {
   if (ow == nullptr) return nullptr;
   return new DS28E17Rmt(ow);
 }
