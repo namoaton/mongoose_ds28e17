@@ -1,0 +1,28 @@
+author: nliviu
+description: Implements Mongoose ds28e17 rmt driver
+type: lib
+version: 1.0
+
+platforms: [ esp32 ]
+
+sources:
+  - src
+includes:
+  - include
+
+config_schema:
+
+tags:
+  - c
+  - docs:drivers:ds28e17 RMT
+
+libs:
+  - origin: https://github.com/mongoose-os-libs/onewire-rmt
+
+build_vars:
+
+cdefs:
+
+manifest_version: 2019-09-23
+
+
