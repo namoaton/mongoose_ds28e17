@@ -14,7 +14,8 @@ config_schema:
 
 tags:
   - c
-  - docs:drivers:ds28e17 RMT
+  - cpp
+#  - docs:drivers:ds28e17 RMT
 
 libs:
   - origin: https://github.com/mongoose-os-libs/onewire-rmt
