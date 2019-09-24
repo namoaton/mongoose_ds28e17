@@ -81,10 +81,7 @@ void DS28E17Rmt::begin(void) {
 // returns true if address is valid
 
 bool DS28E17Rmt::validAddress(const uint8_t *deviceAddress) {
-    if (validFamily(deviceAddress)){
-        return ((_ow->crc8(deviceAddress, 7) == deviceAddress[7]));
-    }
-    return false;
+    return(validFamily(deviceAddress));
 }
 
 bool DS28E17Rmt::validFamily(const uint8_t *deviceAddress) {
