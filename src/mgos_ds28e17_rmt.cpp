@@ -49,7 +49,7 @@ bool mgos_ds28e17_rmt_read_device_rev(DS28E17Rmt *dt, char *addr,uint8_t *rev) {
 }
 bool mgos_ds28e17_rmt_write_data_stop(DS28E17Rmt *dt,uint8_t* deviceAddress, uint8_t len, uint8_t* data){
     if (dt == nullptr) return false;
-    return dt->WriteDataStop((uint8_t *) addr, len, data);
+    return dt->WriteDataStop((uint8_t *) deviceAddress, len, data);
 }
 
 
