@@ -161,6 +161,7 @@ bool  DS28E17Rmt::WriteDataStop(uint8_t* deviceAddress, uint8_t len, uint8_t* da
     _ow->write(crc & 0xff);
     _ow->write(crc >> 8);
     _ow->read_bytes(status, 2);
+    LOG(LL_WARN, ("Status %X %X",status[0],status[1]));
     if((status[0]&0x02 )!= 0x2)
     {
         return false;
