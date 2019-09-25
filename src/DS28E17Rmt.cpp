@@ -113,6 +113,30 @@ bool DS28E17Rmt::getAddress(uint8_t *deviceAddress, uint8_t index) {
 
   return false;
 }
+
+uint16_t  DS28E17Rmt::crc16(uint8_t* input, uint16_t len, uint16_t *crc) {
+    uint16_t crc =0;
+
+    static const uint8_t oddparity[16] =
+            { 0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 0 };
+
+    for (uint16_t i = 0 ; i < len ; i++) {
+    // Even though we're just copying a byte from the input,
+    // we'll be doing 16-bit computation with it.
+    uint16_t cdata = input[i];
+    cdata = (cdata ^ crc) & 0xff;
+    crc >>= 8;
+
+    if (oddparity[cdata & 0x0F] ^ oddparity[cdata >> 4])
+    crc ^= 0xC001;
+
+    cdata <<= 6;
+    crc ^= cdata;
+    cdata <<= 1;
+    crc ^= cdata;
+    }
+    return crc;
+}
 bool  DS28E17Rmt::ReadDeviceRev(uint8_t* deviceAddress, uint8_t* rev){
     int b = _ow->reset();
     if (b == 0) return false;
@@ -124,5 +148,24 @@ bool  DS28E17Rmt::ReadDeviceRev(uint8_t* deviceAddress, uint8_t* rev){
     b = _ow->reset();
     return (b == 1);
 }
+bool  DS28E17Rmt::WriteDataStop(uint8_t* deviceAddress, uint8_t len, uint8_t* data){
+    int b = _ow->reset();
+    if (b == 0) return false;
+    uint8_t  status[2] = 0;
+    _ow->select(deviceAddress);
+    _ow->write(len);
+    _ow->write_bytes(data);
 
+    //CRC16 of command, I 2 C slave address, write length, and write data.
+    uint16_t  crc = crc16(data, len);
+    _ow->write(crc & 0xff);
+    _ow->write(crc >> 8);
+    _ow->read_bytes(status, 2);
+    if(status[0]&0x02 != 0x2)
+    {
+        return false
+    }
+    b = _ow->reset();
+    return (b == 1);
+}
 
