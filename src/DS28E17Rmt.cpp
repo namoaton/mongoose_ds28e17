@@ -91,6 +91,7 @@ bool DS28E17Rmt::validFamily(const uint8_t *deviceAddress) {
   switch (deviceAddress[0]) {
       case DS28E17MODEL:
       ret = true;
+      break;
     default:
       ret = false;
   }
