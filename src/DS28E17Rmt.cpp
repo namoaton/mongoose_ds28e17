@@ -114,7 +114,7 @@ bool DS28E17Rmt::getAddress(uint8_t *deviceAddress, uint8_t index) {
   return false;
 }
 
-uint16_t  DS28E17Rmt::crc16(uint8_t* input, uint16_t len, uint16_t *crc) {
+uint16_t  DS28E17Rmt::crc16(uint8_t* input, uint16_t len) {
     uint16_t crc =0;
 
     static const uint8_t oddparity[16] =
@@ -161,7 +161,7 @@ bool  DS28E17Rmt::WriteDataStop(uint8_t* deviceAddress, uint8_t len, uint8_t* da
     _ow->write(crc & 0xff);
     _ow->write(crc >> 8);
     _ow->read_bytes(status, 2);
-    if(status[0]&0x02 != 0x2)
+    if((status[0]&0x02 )!= 0x2)
     {
         return false
     }
