@@ -60,7 +60,7 @@ class DS28E17Rmt {
    */
   bool getAddress(uint8_t *deviceAddress, uint8_t index);
 
-  bool  ReadDeviceRev(uint8_t* deviceAddress);
+  bool  ReadDeviceRev(uint8_t* deviceAddress, uint8_t* rev);
 
  private:
   /*
