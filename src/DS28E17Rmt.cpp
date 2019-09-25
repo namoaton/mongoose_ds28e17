@@ -2,7 +2,7 @@
 #include "DS28E17Rmt.h"
 #include <mgos_system.h>
 #include <mgos_time.h>
-
+#include "mgos.h"
 // OneWire commands
 #define STARTCONVO \
   0x44  // Tells device to take a temperature reading and put it on the
