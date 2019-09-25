@@ -60,7 +60,7 @@ bool mgos_ds28e17_rmt_valid_family(DS28E17Rmt *dt, const char *addr);
  * Returns true otherwise.
  */
 bool mgos_ds28e17_rmt_get_address(DS28E17Rmt *dt, char *addr, int idx);
-uint16_t  DS28E17Rmt::crc16(uint8_t* input, uint16_t len, uint16_t *crc);
+
 /*
  * Read bridge revision
  */
