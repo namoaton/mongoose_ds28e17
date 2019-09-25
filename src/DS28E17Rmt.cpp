@@ -148,7 +148,7 @@ bool  DS28E17Rmt::ReadDeviceRev(uint8_t* deviceAddress, uint8_t* rev){
     b = _ow->reset();
     return (b == 1);
 }
-bool  DS28E17Rmt::WriteDataStop(uint8_t* deviceAddress, uint8_t * i2c_addr, uint8_t len, uint8_t* data){
+bool  DS28E17Rmt::WriteDataStop(uint8_t* deviceAddress, uint8_t i2c_addr, uint8_t len, uint8_t* data){
     int b = _ow->reset();
     if (b == 0) return false;
     uint8_t  status[2] = {0};
