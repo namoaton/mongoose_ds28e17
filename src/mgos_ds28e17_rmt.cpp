@@ -43,7 +43,7 @@ bool mgos_ds28e17_rmt_get_address(DS28E17Rmt *dt, char *addr, int idx) {
   if (dt == nullptr) return false;
   return dt->getAddress((uint8_t *) addr, idx);
 }
-bool mgos_ds28e17_rmt_read_device_rev(DS28E17Rmt *dt, char *addr,char *rev) {
+bool mgos_ds28e17_rmt_read_device_rev(DS28E17Rmt *dt, char *addr,uint8_t *rev) {
     if (dt == nullptr) return false;
     return dt->ReadDeviceRev((uint8_t *) addr, rev);
 }
