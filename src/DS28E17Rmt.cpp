@@ -74,6 +74,7 @@ void DS28E17Rmt::begin(void) {
 
   while (_ow->search(deviceAddress)) {
     if (validAddress(deviceAddress)) {
+        LOG(LL_WARN, ("Found Bridge\n"));
       _devices++;
     }
   }
