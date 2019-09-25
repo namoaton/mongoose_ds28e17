@@ -148,18 +148,20 @@ bool  DS28E17Rmt::ReadDeviceRev(uint8_t* deviceAddress, uint8_t* rev){
     b = _ow->reset();
     return (b == 1);
 }
-bool  DS28E17Rmt::WriteDataStop(uint8_t* deviceAddress, uint8_t len, uint8_t* data){
+bool  DS28E17Rmt::WriteDataStop(uint8_t* deviceAddress, uint8_t * i2c_addr, uint8_t len, uint8_t* data){
     int b = _ow->reset();
     if (b == 0) return false;
     uint8_t  status[2] = {0};
+    uint8_t command[len + 5] = {Write_Data_Stop, i2c_addr, len};
+    memcpy(command+3,data,len );
+    uint16_t  crc = crc16(command, len+3);
+    command[len+4] = crc & 0xff;
+    command[len+5] = crc >>8;
     _ow->select(deviceAddress);
-    _ow->write(len);
-    _ow->write_bytes(data,len);
+    _ow->write_bytes(command,len+5);
 
     //CRC16 of command, I 2 C slave address, write length, and write data.
-    uint16_t  crc = crc16(data, len);
-    _ow->write(crc & 0xff);
-    _ow->write(crc >> 8);
+
     _ow->read_bytes(status, 2);
     LOG(LL_WARN, ("Status %X %X",status[0],status[1]));
     if((status[0]&0x02 )!= 0x2)
