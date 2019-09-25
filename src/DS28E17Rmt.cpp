@@ -113,5 +113,16 @@ bool DS28E17Rmt::getAddress(uint8_t *deviceAddress, uint8_t index) {
 
   return false;
 }
+bool  DS28E17Rmt::ReadDeviceRev(uint8_t* deviceAddress, uint8_t* rev){
+    nt b = _ow->reset();
+    if (b == 0) return false;
+
+    _ow->select(deviceAddress);
+    _ow->write(Read_Device_Rev);
+    _ow->read_bytes(rev, 1);
+
+    b = _ow->reset();
+    return (b == 1);
+}
 
 
