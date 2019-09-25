@@ -86,6 +86,7 @@ bool DS28E17Rmt::validAddress(const uint8_t *deviceAddress) {
 
 bool DS28E17Rmt::validFamily(const uint8_t *deviceAddress) {
   bool ret;
+  LOG(LL_WARN, ("Addr [0] = %X\n",deviceAddress[0]));
   switch (deviceAddress[0]) {
       case DS28E17MODEL:
       ret = true;

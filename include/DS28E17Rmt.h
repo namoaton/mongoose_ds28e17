@@ -15,7 +15,7 @@
 #define Enable_Sleep            0x1E
 #define Read_Device_Rev         0xC3
 // Model IDs
-#define DS28E17MODEL 0x19  // also DS1820
+#define DS28E17MODEL 0x19  //
 // Error Codes
 #define DEVICE_DISCONNECTED_C -127
 #define DEVICE_DISCONNECTED_F -196.6
