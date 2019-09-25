@@ -151,10 +151,10 @@ bool  DS28E17Rmt::ReadDeviceRev(uint8_t* deviceAddress, uint8_t* rev){
 bool  DS28E17Rmt::WriteDataStop(uint8_t* deviceAddress, uint8_t len, uint8_t* data){
     int b = _ow->reset();
     if (b == 0) return false;
-    uint8_t  status[2] = 0;
+    uint8_t  status[2] = {0};
     _ow->select(deviceAddress);
     _ow->write(len);
-    _ow->write_bytes(data);
+    _ow->write_bytes(data,len);
 
     //CRC16 of command, I 2 C slave address, write length, and write data.
     uint16_t  crc = crc16(data, len);
@@ -163,7 +163,7 @@ bool  DS28E17Rmt::WriteDataStop(uint8_t* deviceAddress, uint8_t len, uint8_t* da
     _ow->read_bytes(status, 2);
     if((status[0]&0x02 )!= 0x2)
     {
-        return false
+        return false;
     }
     b = _ow->reset();
     return (b == 1);
