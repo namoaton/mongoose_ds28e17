@@ -133,7 +133,7 @@ uint16_t  DS28E17Rmt::calculateCrc16(uint16_t crc16, uint16_t data)
 }
 
 
-uint16_t  DS28E17Rmt::crc16(uint8_t* input, uint16_t len, crc) {
+uint16_t  DS28E17Rmt::crc16(uint8_t* input, uint16_t len, uint16_t  crc) {
     for (size_t i = 0; i < dataLen; i++)
     {
         crc = calculateCrc16(crc, input[i]);
