@@ -156,7 +156,7 @@ bool  DS28E17Rmt::WriteDataStop(uint8_t* deviceAddress, uint8_t i2c_addr, uint8_
     uint8_t command[len + 5] = {Write_Data_Stop, i2c_addr, len};
     memcpy(&command[3],data,len );
     uint16_t  crc = crc16(command, len+3);
-
+    crc =~crc;
     command[len+3] = crc & 0xff;
     command[len+4] = crc >>8;
     for(int m=0; m<len+5; m++){
@@ -173,6 +173,10 @@ bool  DS28E17Rmt::WriteDataStop(uint8_t* deviceAddress, uint8_t i2c_addr, uint8_
     {
         return false;
     }
+    if((status[0]&0x01 )== 0x1)
+    {
+        return false;
+    }
     b = _ow->reset();
     return (b == 1);
 }
@@ -184,7 +188,7 @@ bool  DS28E17Rmt::WriteDataOnlyStop(uint8_t* deviceAddress, uint8_t len, uint8_t
     uint8_t command[len + 4] = {Write_Data_Only_Stop, len};
     memcpy(&command[2],data,len );
     uint16_t  crc = crc16(command, len+2);
-
+    crc =~crc;
     command[len+2] = crc & 0xff;
     command[len+3] = crc >>8;
     for(int m=0; m<len+4; m++){
@@ -198,6 +202,10 @@ bool  DS28E17Rmt::WriteDataOnlyStop(uint8_t* deviceAddress, uint8_t len, uint8_t
     _ow->read_bytes(status, 2);
     LOG(LL_WARN, ("Status %X %X",status[0],status[1]));
     if((status[0]&0x02 )== 0x2)
+    {
+        return false;
+    }
+    if((status[0]&0x01 )== 0x1)
     {
         return false;
     }
