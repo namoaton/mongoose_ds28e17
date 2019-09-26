@@ -59,7 +59,7 @@ class DS28E17Rmt {
    * Finds an address at a given index on the bus
    */
   bool getAddress(uint8_t *deviceAddress, uint8_t index);
-  uint16_t  DS28E17Rmt::calculateCrc16(uint16_t crc16, uint16_t data);
+  uint16_t calculateCrc16(uint16_t crc16, uint16_t data);
   uint16_t crc16(uint8_t* input, uint16_t len, uint16_t  crc);
   bool  ReadDeviceRev(uint8_t* deviceAddress, uint8_t* rev);
   bool WriteDataStop(uint8_t* deviceAddress, uint8_t  i2c_addr, uint8_t len, uint8_t* data);
