@@ -129,7 +129,9 @@ uint16_t  DS28E17Rmt::crc16(uint8_t* input, uint16_t len) {
         crc >>= 8;
 
         if (oddparity[cdata & 0x0F] ^ oddparity[cdata >> 4])
+        {
             crc ^= 0xC001;
+        }
 
         cdata <<= 6;
         crc ^= cdata;
@@ -138,6 +140,7 @@ uint16_t  DS28E17Rmt::crc16(uint8_t* input, uint16_t len) {
     }
     return crc;
 }
+
 bool  DS28E17Rmt::ReadDeviceRev(uint8_t* deviceAddress, uint8_t* rev){
     int b = _ow->reset();
     if (b == 0) return false;
@@ -149,6 +152,7 @@ bool  DS28E17Rmt::ReadDeviceRev(uint8_t* deviceAddress, uint8_t* rev){
     b = _ow->reset();
     return (b == 1);
 }
+
 bool  DS28E17Rmt::WriteDataStop(uint8_t* deviceAddress, uint8_t i2c_addr, uint8_t len, uint8_t* data){
     LOG(LL_WARN, ("WriteDataStop"));
     int b = _ow->reset();
