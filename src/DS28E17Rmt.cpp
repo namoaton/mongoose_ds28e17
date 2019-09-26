@@ -119,7 +119,7 @@ uint16_t  DS28E17Rmt::crc16(uint8_t* input, uint16_t len) {
 
         for (uint8_t i=0; i<len;i++)
         {
-            uint8_t inbyte = data[i];
+            uint8_t inbyte = input[i];
             for (uint8_t j=0;j<8;j++)
             {
                 uint8_t mix = (byte(crc)^ inbyte) & 0x01;
