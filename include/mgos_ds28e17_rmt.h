@@ -69,6 +69,8 @@ bool mgos_ds28e17_rmt_read_device_rev(DS28E17Rmt *dt, char *addr, uint8_t *rev);
  * Write data stop to I2c
  */
 bool mgos_ds28e17_rmt_write_data_stop(DS28E17Rmt *dt, uint8_t* deviceAddress, uint8_t i2c_addr, uint8_t len, uint8_t* data);
+bool mgos_ds28e17_rmt_write_data_only_stop(DS28E17Rmt *dt, uint8_t* deviceAddress, uint8_t len, uint8_t* data);
+
 #ifdef __cplusplus
 }
 #endif
