@@ -115,43 +115,28 @@ bool DS28E17Rmt::getAddress(uint8_t *deviceAddress, uint8_t index) {
 }
 
 uint16_t  DS28E17Rmt::crc16(uint8_t* input, uint16_t len) {
-        uint16_t crc=0;
 
-        for (uint8_t i=0; i<len;i++)
-        {
-            uint8_t inbyte = input[i];
-            for (uint8_t j=0;j<8;j++)
-            {
-                uint8_t mix = ((crc&0xff)^ inbyte) & 0x01;
-                crc = crc >> 1;
-                if (mix)
-                    crc = crc ^ 0xA001;
+    uint16_t crc =0;
 
-                inbyte = inbyte >> 1;
-            }
-        }
-        return crc;
-//    uint16_t crc =0;
-//
-//    static const uint8_t oddparity[16] =
-//            { 0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 0 };
-//
-//    for (uint16_t i = 0 ; i < len ; i++) {
-//    // Even though we're just copying a byte from the input,
-//    // we'll be doing 16-bit computation with it.
-//    uint16_t cdata = input[i];
-//    cdata = (cdata ^ crc) & 0xff;
-//    crc >>= 8;
-//
-//    if (oddparity[cdata & 0x0F] ^ oddparity[cdata >> 4])
-//    crc ^= 0xC001;
-//
-//    cdata <<= 6;
-//    crc ^= cdata;
-//    cdata <<= 1;
-//    crc ^= cdata;
-//    }
-//    return crc;
+    static const uint8_t oddparity[16] =
+            { 0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 0 };
+
+    for (uint16_t i = 0 ; i < len ; i++) {
+        // Even though we're just copying a byte from the input,
+        // we'll be doing 16-bit computation with it.
+        uint16_t cdata = input[i];
+        cdata = (cdata ^ crc) & 0xff;
+        crc >>= 8;
+
+        if (oddparity[cdata & 0x0F] ^ oddparity[cdata >> 4])
+            crc ^= 0xC001;
+
+        cdata <<= 6;
+        crc ^= cdata;
+        cdata <<= 1;
+        crc ^= cdata;
+    }
+    return crc;
 }
 bool  DS28E17Rmt::ReadDeviceRev(uint8_t* deviceAddress, uint8_t* rev){
     int b = _ow->reset();
