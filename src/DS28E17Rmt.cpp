@@ -155,8 +155,12 @@ bool  DS28E17Rmt::WriteDataStop(uint8_t* deviceAddress, uint8_t i2c_addr, uint8_
     uint8_t command[len + 5] = {Write_Data_Stop, i2c_addr, len};
     memcpy(command+3,data,len );
     uint16_t  crc = crc16(command, len+3);
+    for(int m=0; m<len+5; m++)
     command[len+3] = crc & 0xff;
     command[len+4] = crc >>8;
+    for(int m=0; m<len+5; m++){
+        LOG(LL_WARN, ("command [%d] = %X", m,command[m]));
+    }
     _ow->select(deviceAddress);
     _ow->write_bytes(command,len+5);
 
