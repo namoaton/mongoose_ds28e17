@@ -181,7 +181,7 @@ bool  DS28E17Rmt::WriteDataOnlyStop(uint8_t* deviceAddress, uint8_t len, uint8_t
     if (b == 0) return false;
     uint8_t  status[2] = {0};
     uint8_t command[len + 4] = {Write_Data_Stop, len};
-    memcpy(command+3,data,len );
+    memcpy(command+2,data,len );
     uint16_t  crc = crc16(command, len+3);
     command[len+2] = crc & 0xff;
     command[len+3] = crc >>8;
