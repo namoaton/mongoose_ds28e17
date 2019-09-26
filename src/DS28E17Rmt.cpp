@@ -113,10 +113,33 @@ bool DS28E17Rmt::getAddress(uint8_t *deviceAddress, uint8_t index) {
 
   return false;
 }
+uint16_t  DS28E17Rmt::calculateCrc16(uint16_t crc16, uint16_t data)
+{
+    const uint16_t oddparity[] = { 0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 0 };
+    data = (data ^ (crc16 & 0xff)) & 0xff;
+    crc16 >>= 8;
 
-uint16_t  DS28E17Rmt::crc16(uint8_t* input, uint16_t len) {
+    if (oddparity[data & 0xf] ^ oddparity[data >> 4])
+    {
+        crc16 ^= 0xc001;
+    }
 
-    uint16_t crc =0;
+    data <<= 6;
+    crc16 ^= data;
+    data <<= 1;
+    crc16 ^= data;
+
+    return crc16;
+}
+
+
+uint16_t  DS28E17Rmt::crc16(uint8_t* input, uint16_t len, crc) {
+    for (size_t i = 0; i < dataLen; i++)
+    {
+        crc = calculateCrc16(crc, input[i]);
+    }
+    return crc;
+    /*uint16_t crc =0;
 
     static const uint8_t oddparity[16] =
             { 0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 0 };
@@ -138,7 +161,7 @@ uint16_t  DS28E17Rmt::crc16(uint8_t* input, uint16_t len) {
         cdata <<= 1;
         crc ^= cdata;
     }
-    return crc;
+    return crc;*/
 }
 
 bool  DS28E17Rmt::ReadDeviceRev(uint8_t* deviceAddress, uint8_t* rev){
