@@ -152,11 +152,11 @@ bool  DS28E17Rmt::WriteDataStop(uint8_t* deviceAddress, uint8_t i2c_addr, uint8_
     int b = _ow->reset();
     if (b == 0) return false;
     uint8_t  status[2] = {0};
-    uint8_t command[len + 5] = {Write_Data_Stop, &i2c_addr, len};
+    uint8_t command[len + 5] = {Write_Data_Stop, i2c_addr, len};
     memcpy(command+3,data,len );
     uint16_t  crc = crc16(command, len+3);
-    command[len+4] = crc & 0xff;
-    command[len+5] = crc >>8;
+    command[len+3] = crc & 0xff;
+    command[len+4] = crc >>8;
     _ow->select(deviceAddress);
     _ow->write_bytes(command,len+5);
 
