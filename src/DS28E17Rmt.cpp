@@ -168,7 +168,7 @@ bool  DS28E17Rmt::WriteDataStop(uint8_t* deviceAddress, uint8_t i2c_addr, uint8_
 
     _ow->read_bytes(status, 2);
     LOG(LL_WARN, ("Status %X %X",status[0],status[1]));
-    if((status[0]&0x02 )!= 0x2)
+    if((status[0]&0x02 )== 0x2)
     {
         return false;
     }
@@ -195,7 +195,7 @@ bool  DS28E17Rmt::WriteDataOnlyStop(uint8_t* deviceAddress, uint8_t len, uint8_t
 
     _ow->read_bytes(status, 2);
     LOG(LL_WARN, ("Status %X %X",status[0],status[1]));
-    if((status[0]&0x02 )!= 0x2)
+    if((status[0]&0x02 )== 0x2)
     {
         return false;
     }
