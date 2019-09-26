@@ -122,7 +122,7 @@ uint16_t  DS28E17Rmt::crc16(uint8_t* input, uint16_t len) {
             uint8_t inbyte = input[i];
             for (uint8_t j=0;j<8;j++)
             {
-                uint8_t mix = ((uint8_t)(crc)^ inbyte) & 0x01;
+                uint8_t mix = ((crc&0xff)^ inbyte) & 0x01;
                 crc = crc >> 1;
                 if (mix)
                     crc = crc ^ 0xA001;
@@ -189,11 +189,11 @@ bool  DS28E17Rmt::WriteDataStop(uint8_t* deviceAddress, uint8_t i2c_addr, uint8_
     }
     _ow->read_bytes(status, 2);
     LOG(LL_WARN, ("Status %X %X",status[0],status[1]));
-    if((status[0]&0x02 )== 0x2)
+    if((status[0]&0x01 )== 0x1)
     {
         return false;
     }
-    if((status[0]&0x01 )== 0x1)
+    if((status[0]&0x02 )== 0x2)
     {
         return false;
     }
@@ -224,11 +224,11 @@ bool  DS28E17Rmt::WriteDataOnlyStop(uint8_t* deviceAddress, uint8_t len, uint8_t
     }
     _ow->read_bytes(status, 2);
     LOG(LL_WARN, ("Status %X %X",status[0],status[1]));
-    if((status[0]&0x02 )== 0x2)
+    if((status[0]&0x01 )== 0x1)
     {
         return false;
     }
-    if((status[0]&0x01 )== 0x1)
+    if((status[0]&0x02 )== 0x2)
     {
         return false;
     }
