@@ -242,7 +242,7 @@ bool  DS28E17Rmt::WriteDataOnly(uint8_t* deviceAddress, uint8_t len, uint8_t* da
 
 bool  DS28E17Rmt::ReadDataStop(uint8_t* deviceAddress, uint8_t i2c_addr, uint8_t len, uint8_t* data){
 //  LOG(LL_WARN, ("ReadDataStop"));
-    bool res = true
+    bool res = true;
     uint8_t  status[2] = {0};
     uint8_t command[5] = {Read_Data_Stop, i2c_addr, len};
     uint16_t  crc = 0;
