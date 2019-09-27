@@ -252,3 +252,12 @@ bool  DS28E17Rmt::WriteDataOnlyStop(uint8_t* deviceAddress, uint8_t len, uint8_t
     b = _ow->reset();
     return (b == 1);
 }
+bool   DS28E17Rmt::ReadConfig(uint8_t* deviceAddress, uint8_t * config){
+    int b = _ow->reset();
+    if (b == 0) return false;
+    _ow->select(deviceAddress);
+    _ow->write(Read_Config);
+    _ow->read_bytes(rev, 1);
+    b = _ow->reset();
+    return (b == 1);
+}

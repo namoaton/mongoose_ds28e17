@@ -55,5 +55,8 @@ bool mgos_ds28e17_rmt_write_data_only_stop(DS28E17Rmt *dt, uint8_t* deviceAddres
     if (dt == nullptr) return false;
     return dt->WriteDataOnlyStop((uint8_t *) deviceAddress,len, data);
 }
-
+bool mgos_ds28e17_rmt_read_device_config(DS28E17Rmt *dt, char *addr, uint8_t *config){
+    if (dt == nullptr) return false;
+    return dt->ReadConfig((uint8_t *) addr, config);
+}
 

@@ -64,6 +64,7 @@ class DS28E17Rmt {
   bool  ReadDeviceRev(uint8_t* deviceAddress, uint8_t* rev);
   bool WriteDataStop(uint8_t* deviceAddress, uint8_t  i2c_addr, uint8_t len, uint8_t* data);
   bool WriteDataOnlyStop(uint8_t* deviceAddress, uint8_t len, uint8_t* data);
+  bool ReadConfig(uint8_t* deviceAddress, uint8_t * config);
  private:
   /*
    * The OneWire object
