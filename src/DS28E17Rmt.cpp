@@ -121,7 +121,7 @@ uint16_t  DS28E17Rmt::calculateCrc16(uint16_t crc16, uint16_t data)
 
     if (oddparity[data & 0xf] ^ oddparity[data >> 4])
     {
-        crc16 ^= 0xA001;//0xc001
+        crc16 ^= 0xc001;
     }
 
     data <<= 6;
@@ -134,11 +134,29 @@ uint16_t  DS28E17Rmt::calculateCrc16(uint16_t crc16, uint16_t data)
 
 
 uint16_t  DS28E17Rmt::crc16(uint8_t* input, uint16_t len, uint16_t  crc) {
-    for (size_t i = 0; i < len; i++)
-    {
-        crc = calculateCrc16(crc, input[i]);
-    }
-    return crc;
+
+
+         crc=0;
+        for (uint8_t i=0; i<len;i++)
+        {
+            uint8_t inbyte = input[i];
+            for (uint8_t j=0;j<8;j++)
+            {
+                uint8_t mix = ((crc&0xff)^ inbyte) & 0x01;
+                crc = crc >> 1;
+                if (mix)
+                    crc = crc ^ 0xA001;
+
+                inbyte = inbyte >> 1;
+            }
+        }
+        return crc;
+
+    //    for (size_t i = 0; i < len; i++)
+//    {
+//        crc = calculateCrc16(crc, input[i]);
+//    }
+//    return crc;
     /*uint16_t crc =0;
 
     static const uint8_t oddparity[16] =
