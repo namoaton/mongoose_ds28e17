@@ -116,7 +116,7 @@ bool DS28E17Rmt::getAddress(uint8_t *deviceAddress, uint8_t index) {
 uint16_t  DS28E17Rmt::calculateCrc16(uint16_t crc16, uint16_t data)
 {
     const uint16_t oddparity[] = { 0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 0 };
-    data = (data ^ (crc16 & 0xff)) & 0xff;
+    data = (data ^ crc16) & 0xff;
     crc16 >>= 8;
 
     if (oddparity[data & 0xf] ^ oddparity[data >> 4])
