@@ -51,18 +51,37 @@ bool mgos_ds28e17_rmt_write_data_stop(DS28E17Rmt *dt,uint8_t* deviceAddress,uint
     if (dt == nullptr) return false;
     return dt->WriteDataStop((uint8_t *) deviceAddress, i2c_addr,len, data);
 }
+
+bool mgos_ds28e17_rmt_write_data_no_stop(DS28E17Rmt *dt,uint8_t* deviceAddress,uint8_t i2c_addr, uint8_t len, uint8_t* data){
+    if (dt == nullptr) return false;
+    return dt->WriteDataNoStop((uint8_t *) deviceAddress, i2c_addr,len, data);
+}
+
 bool mgos_ds28e17_rmt_write_data_only_stop(DS28E17Rmt *dt, uint8_t* deviceAddress, uint8_t len, uint8_t* data){
     if (dt == nullptr) return false;
     return dt->WriteDataOnlyStop((uint8_t *) deviceAddress,len, data);
 }
+
+bool mgos_ds28e17_rmt_write_data_only(DS28E17Rmt *dt, uint8_t* deviceAddress, uint8_t len, uint8_t* data){
+    if (dt == nullptr) return false;
+    return dt->WriteDataOnly((uint8_t *) deviceAddress,len, data);
+}
+
+bool mgos_ds28e17_rmt_read_data_stop(DS28E17Rmt *dt,uint8_t* deviceAddress, uint8_t i2c_addr, uint8_t len, uint8_t* data){
+    if (dt == nullptr) return false;
+    return dt->ReadDataStop((uint8_t *) deviceAddress, i2c_addr,len, data);
+}
+
 bool mgos_ds28e17_rmt_read_device_config(DS28E17Rmt *dt, char *addr, uint8_t *config){
     if (dt == nullptr) return false;
     return dt->ReadConfig((uint8_t *) addr, config);
 }
+
 bool mgos_ds28e17_rmt_write_device_config(DS28E17Rmt *dt, char *addr, uint8_t *config){
     if (dt == nullptr) return false;
     return dt->WriteConfig((uint8_t *) addr, config);
 }
+
 bool mgos_ds28e17_rmt_enable_sleep(DS28E17Rmt *dt, char *addr){
     if (dt == nullptr) return false;
     return dt->EnableSleep((uint8_t *) addr);

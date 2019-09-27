@@ -5,10 +5,10 @@
 
 /***************DS28E17 commands***************************/
 #define Write_Data_Stop         0x4B //+
-#define Write_Data_No_Stop      0x5A
-#define Write_Data_Only         0x69
+#define Write_Data_No_Stop      0x5A //+
+#define Write_Data_Only         0x69 //+
 #define Write_Data_Only_Stop    0x78 //+
-#define Read_Data_Stop          0x87
+#define Read_Data_Stop          0x87 //+
 #define Write_Read_Data_Stop    0x2D
 #define Write_Config            0xD2 //+
 #define Read_Config             0xE1 //+
@@ -58,15 +58,19 @@ class DS28E17Rmt {
   /*
    * Finds an address at a given index on the bus
    */
-  bool getAddress(uint8_t *deviceAddress, uint8_t index);
-  uint16_t calculateCrc16(uint16_t crc16, uint16_t data);
-  uint16_t crc16(uint8_t* input, uint16_t len, uint16_t  crc);
-  bool  ReadDeviceRev(uint8_t* deviceAddress, uint8_t* rev);
-  bool WriteDataStop(uint8_t* deviceAddress, uint8_t  i2c_addr, uint8_t len, uint8_t* data);
-  bool WriteDataOnlyStop(uint8_t* deviceAddress, uint8_t len, uint8_t* data);
-  bool ReadConfig(uint8_t* deviceAddress, uint8_t * config);
-  bool WriteConfig(uint8_t* deviceAddress, uint8_t * config);
-  bool EnableSleep(uint8_t* deviceAddress);
+    bool getAddress(uint8_t *deviceAddress, uint8_t index);
+    uint16_t calculateCrc16(uint16_t crc16, uint16_t data);
+    uint16_t crc16(uint8_t* input, uint16_t len, uint16_t  crc);
+    bool ReadDeviceRev(uint8_t* deviceAddress, uint8_t* rev);
+    bool WriteDataStop(uint8_t* deviceAddress, uint8_t  i2c_addr, uint8_t len, uint8_t* data);
+    bool WriteDataNoStop(uint8_t* deviceAddress, uint8_t i2c_addr, uint8_t len, uint8_t* data);
+    bool WriteDataOnlyStop(uint8_t* deviceAddress, uint8_t len, uint8_t* data);
+    bool WriteDataOnly(uint8_t* deviceAddress, uint8_t len, uint8_t* data);
+    bool ReadDataStop(uint8_t* deviceAddress, uint8_t i2c_addr, uint8_t len, uint8_t* data);
+    bool ReadConfig(uint8_t* deviceAddress, uint8_t * config);
+    bool WriteConfig(uint8_t* deviceAddress, uint8_t * config);
+    bool EnableSleep(uint8_t* deviceAddress);
+
  private:
   /*
    * The OneWire object
