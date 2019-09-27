@@ -253,7 +253,7 @@ bool  DS28E17Rmt::ReadDataStop(uint8_t* deviceAddress, uint8_t i2c_addr, uint8_t
     if (b == 0) return false;
     _ow->select(deviceAddress);
     _ow->write_bytes(command,len+5);
-    mgos_msleep(5);
+    mgos_msleep(50);
     _ow->read_bytes(status, 2);
     _ow->read_bytes(data, len);
 //  LOG(LL_WARN, ("Status %X %X",status[0],status[1]));
