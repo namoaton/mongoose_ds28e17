@@ -261,3 +261,12 @@ bool   DS28E17Rmt::ReadConfig(uint8_t* deviceAddress, uint8_t * config){
     b = _ow->reset();
     return (b == 1);
 }
+bool   DS28E17Rmt::WriteConfig(uint8_t* deviceAddress, uint8_t * config){
+    int b = _ow->reset();
+    if (b == 0) return false;
+    _ow->select(deviceAddress);
+    _ow->write(Write_Config);
+    _ow->write_bytes(config, 1);
+    b = _ow->reset();
+    return (b == 1);
+}

@@ -59,4 +59,8 @@ bool mgos_ds28e17_rmt_read_device_config(DS28E17Rmt *dt, char *addr, uint8_t *co
     if (dt == nullptr) return false;
     return dt->ReadConfig((uint8_t *) addr, config);
 }
+bool mgos_ds28e17_rmt_write_device_config(DS28E17Rmt *dt, char *addr, uint8_t *config){
+    if (dt == nullptr) return false;
+    return dt->WriteConfig((uint8_t *) addr, config);
+}
 
