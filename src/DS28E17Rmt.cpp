@@ -242,6 +242,7 @@ bool  DS28E17Rmt::WriteDataOnly(uint8_t* deviceAddress, uint8_t len, uint8_t* da
 
 bool  DS28E17Rmt::ReadDataStop(uint8_t* deviceAddress, uint8_t i2c_addr, uint8_t len, uint8_t* data){
 //  LOG(LL_WARN, ("ReadDataStop"));
+    bool res = true
     uint8_t  status[2] = {0};
     uint8_t command[5] = {Read_Data_Stop, i2c_addr, len};
     uint16_t  crc = 0;
@@ -257,16 +258,17 @@ bool  DS28E17Rmt::ReadDataStop(uint8_t* deviceAddress, uint8_t i2c_addr, uint8_t
     _ow->read_bytes(status, 2);
     _ow->read_bytes(data, len);
 //  LOG(LL_WARN, ("Status %X %X",status[0],status[1]));
+    b = _ow->reset();
+    res = (b == 1);
     if((status[0]&0x01 )== 0x1)
     {
-        return false;
+        res = false;
     }
     if((status[0]&0x02 )== 0x2)
     {
-        return false;
+        res = false;
     }
-    b = _ow->reset();
-    return (b == 1);
+    return  res;
 }
 /*
  * 00b = I 2 C speed set to 100kHz
