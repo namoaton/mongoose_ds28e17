@@ -186,8 +186,8 @@ bool  DS28E17Rmt::WriteDataStop(uint8_t* deviceAddress, uint8_t i2c_addr, uint8_
     crc = crc16(command, len+3, crc);
     crc =~crc;
 
-    command[len+4] = crc >>8;
-    command[len+3] = crc & 0xff;
+    command[len+3] = crc >>8;
+    command[len+4] = crc & 0xff;
     for(int m=0; m<len+5; m++){
         LOG(LL_WARN, ("command [%d] = %X", m,command[m]));
     }
@@ -224,8 +224,8 @@ bool  DS28E17Rmt::WriteDataOnlyStop(uint8_t* deviceAddress, uint8_t len, uint8_t
     crc = crc16(command, len+2,crc);
     crc =~crc;
 
-    command[len+3] = crc >>8;
-    command[len+2] = crc & 0xff;
+    command[len+2] = crc >>8;
+    command[len+3] = crc & 0xff;
     for(int m=0; m<len+4; m++){
         LOG(LL_WARN, ("command [%d] = %X", m,command[m]));
     }
