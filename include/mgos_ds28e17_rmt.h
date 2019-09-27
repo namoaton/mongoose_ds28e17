@@ -73,8 +73,9 @@ bool mgos_ds28e17_rmt_write_data_only_stop(DS28E17Rmt *dt, uint8_t* deviceAddres
 /*
  * Read bridge config
  */
+
 bool mgos_ds28e17_rmt_read_device_config(DS28E17Rmt *dt, char *addr, uint8_t *config);
-/*
+
 #ifdef __cplusplus
 }
 #endif
