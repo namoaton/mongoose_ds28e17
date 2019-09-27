@@ -80,6 +80,11 @@ bool mgos_ds28e17_rmt_read_device_config(DS28E17Rmt *dt, char *addr, uint8_t *co
  */
 
 bool mgos_ds28e17_rmt_write_device_config(DS28E17Rmt *dt, char *addr, uint8_t *config);
+/*
+ * Enter sleep mode
+ */
+
+bool mgos_ds28e17_rmt_enable_sleep(DS28E17Rmt *dt, char *addr);
 
 #ifdef __cplusplus
 }

@@ -63,4 +63,8 @@ bool mgos_ds28e17_rmt_write_device_config(DS28E17Rmt *dt, char *addr, uint8_t *c
     if (dt == nullptr) return false;
     return dt->WriteConfig((uint8_t *) addr, config);
 }
+bool mgos_ds28e17_rmt_enable_sleep(DS28E17Rmt *dt, char *addr){
+    if (dt == nullptr) return false;
+    return dt->EnableSleep((uint8_t *) addr);
+}
 

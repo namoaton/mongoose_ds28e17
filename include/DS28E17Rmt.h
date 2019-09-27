@@ -10,9 +10,9 @@
 #define Write_Data_Only_Stop    0x78 //+
 #define Read_Data_Stop          0x87
 #define Write_Read_Data_Stop    0x2D
-#define Write_Config            0xD2
+#define Write_Config            0xD2 //+
 #define Read_Config             0xE1 //+
-#define Enable_Sleep            0x1E
+#define Enable_Sleep            0x1E //+
 #define Read_Device_Rev         0xC3 //+
 // Model IDs
 #define DS28E17MODEL 0x19  //
@@ -65,7 +65,8 @@ class DS28E17Rmt {
   bool WriteDataStop(uint8_t* deviceAddress, uint8_t  i2c_addr, uint8_t len, uint8_t* data);
   bool WriteDataOnlyStop(uint8_t* deviceAddress, uint8_t len, uint8_t* data);
   bool ReadConfig(uint8_t* deviceAddress, uint8_t * config);
-  bool  WriteConfig(uint8_t* deviceAddress, uint8_t * config);
+  bool WriteConfig(uint8_t* deviceAddress, uint8_t * config);
+  bool EnableSleep(uint8_t* deviceAddress);
  private:
   /*
    * The OneWire object
