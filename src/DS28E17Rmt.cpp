@@ -268,10 +268,10 @@ bool  DS28E17Rmt::ReadDataStop(uint8_t* deviceAddress, uint8_t i2c_addr, uint8_t
     b = _ow->reset();
     return (b == 1);
 }
-bool  DS28E17Rmt::WriteDataOnly(uint8_t* deviceAddress, uint8_t len, uint8_t* data){
+bool  DS28E17Rmt::WriteDataOnlyStop(uint8_t* deviceAddress, uint8_t len, uint8_t* data){
 //  LOG(LL_WARN, ("WriteDataOnly"));
     uint8_t  status[2] = {0};
-    uint8_t command[len + 4] = {Write_Data_Only, len};
+    uint8_t command[len + 4] = {Write_Data_Only_Stop, len};
     memcpy(&command[2],data,len );
     uint16_t  crc = 0;
     crc = crc16(command, len+2,crc);
