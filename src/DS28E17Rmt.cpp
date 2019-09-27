@@ -121,7 +121,7 @@ uint16_t  DS28E17Rmt::calculateCrc16(uint16_t crc16, uint16_t data)
 
     if (oddparity[data & 0xf] ^ oddparity[data >> 4])
     {
-        crc16 ^= 0xc001;
+        crc16 ^= 0x8005;//0xc001
     }
 
     data <<= 6;
