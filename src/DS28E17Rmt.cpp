@@ -61,7 +61,7 @@ bool  DS28E17Rmt::ow_write_byte(uint8_t* deviceAddress, uint8_t command, uint8_t
         _ow->write(command);
         _ow->write_bytes(byte, 1);
         b = _ow->reset();
-        return (b == 1)
+        return (b == 1);
 }
 // initialise the bus
 
