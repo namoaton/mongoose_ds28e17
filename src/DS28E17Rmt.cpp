@@ -54,7 +54,7 @@ bool DS28E17Rmt::ow_read_byte(uint8_t* deviceAddress,  uint8_t command, uint8_t 
     b = _ow->reset();
     return (b == 1);
 }
-bool  DS28E17Rmt::ow_write_byte(uint8_t* deviceAddress, uint8_t command, uint8_t *byte{
+bool  DS28E17Rmt::ow_write_byte(uint8_t* deviceAddress, uint8_t command, uint8_t *byte){
         int b = _ow->reset();
         if (b == 0) return false;
         _ow->select(deviceAddress);
@@ -62,7 +62,7 @@ bool  DS28E17Rmt::ow_write_byte(uint8_t* deviceAddress, uint8_t command, uint8_t
         _ow->write_bytes(byte, 1);
         b = _ow->reset();
         return (b == 1)
-};
+}
 // initialise the bus
 
 void DS28E17Rmt::begin(void) {
