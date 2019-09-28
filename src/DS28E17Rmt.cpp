@@ -79,6 +79,22 @@ bool DS28E17Rmt::ow_write_bytes(uint8_t* deviceAddress, uint8_t len, uint8_t *by
     res =check_status(status);
     return  res;
 }
+bool  DS28E17Rmt::ow_read_bytes(uint8_t* deviceAddress, uint8_t *command, uint8_t len_w, uint8_t *bytes, uint8_t len_r){
+    bool res = true;
+    uint8_t  status[2] = {0};
+    packet_crc(command,len_w);
+    int b = _ow->reset();
+    if (b == 0) return false;
+    _ow->select(deviceAddress);
+    _ow->write_bytes(command,len_wr + 2);
+    mgos_msleep(50);
+    _ow->read_bytes(status, 1);
+    _ow->read_bytes(bytes, len_r);
+    b = _ow->reset();
+    res = (b == 1);
+    res =check_status(status);
+    return  res;
+}
 // initialise the bus
 
 void DS28E17Rmt::begin(void) {
@@ -195,126 +211,44 @@ bool  DS28E17Rmt::ReadDeviceRev(uint8_t* deviceAddress, uint8_t* rev){
 
 bool  DS28E17Rmt::WriteDataStop(uint8_t* deviceAddress, uint8_t i2c_addr, uint8_t len, uint8_t* data){
 //    LOG(LL_WARN, ("WriteDataStop"));
-    //uint8_t  res = 1;
-    //uint8_t  status[2] = {0};
     uint8_t command[len + 5] = {Write_Data_Stop, i2c_addr, len};
     memcpy(&command[3],data,len );
     return ow_write_bytes(deviceAddress,len+3, command);
-   /* packet_crc(command,len+3);
-    int b = _ow->reset();
-    if (b == 0) return false;
-    _ow->select(deviceAddress);
-    _ow->write_bytes(command,len+5);
-     mgos_msleep(5);
-    _ow->read_bytes(status,2);
-//    LOG(LL_WARN, ("Status %X %X",status[0],status[1]));
-    b = _ow->reset();
-    res = (b == 1);
-    res =check_status(status);
-    return  res;*/
 }
 
 bool  DS28E17Rmt::WriteDataNoStop(uint8_t* deviceAddress, uint8_t i2c_addr, uint8_t len, uint8_t* data){
 //    LOG(LL_WARN, ("WriteDataNoStop"));
-    uint8_t  res = 1;
-    uint8_t  status[2] = {0};
     uint8_t command[len + 5] = {Write_Data_No_Stop, i2c_addr, len};
     memcpy(&command[3],data,len );
-    packet_crc(command,len+3);
-    int b = _ow->reset();
-    if (b == 0) return false;
-    _ow->select(deviceAddress);
-    _ow->write_bytes(command,len+5);
-    mgos_msleep(5);
-    _ow->read_bytes(status, 2);
-    b = _ow->reset();
-    res =  (b == 1);
-//    LOG(LL_WARN, ("Status %X %X",status[0],status[1]));
-    res =check_status(status);
-    return  res;
+    return ow_write_bytes(deviceAddress,len+3, command);
+
 }
 
 bool  DS28E17Rmt::WriteDataOnlyStop(uint8_t* deviceAddress, uint8_t len, uint8_t* data){
 //  LOG(LL_WARN, ("WriteDataOnlyStop"));
-    uint8_t  res = 1;
-    uint8_t  status[2] = {0};
     uint8_t command[len + 4] = {Write_Data_Only_Stop, len};
     memcpy(&command[2],data,len );
-    packet_crc(command,len+2);
-    int b = _ow->reset();
-    if (b == 0) return false;
-    _ow->select(deviceAddress);
-    _ow->write_bytes(command,len+4);
-     mgos_msleep(5);
-    _ow->read_bytes(status, 2);
-    b = _ow->reset();
-    res =  (b == 1);
-//  LOG(LL_WARN, ("Status %X %X",status[0],status[1]));
-    res =check_status(status);
-    return  res;
+    return ow_write_bytes(deviceAddress,len+2, command);
 }
 bool  DS28E17Rmt::WriteDataOnly(uint8_t* deviceAddress, uint8_t len, uint8_t* data){
 //  LOG(LL_WARN, ("WriteDataOnly"));
-    uint8_t  res = 1;
-    uint8_t  status[2] = {0};
     uint8_t command[len + 4] = {Write_Data_Only, len};
     memcpy(&command[2],data,len );
-    packet_crc(command,len+2);
-    int b = _ow->reset();
-    if (b == 0) return false;
-    _ow->select(deviceAddress);
-    _ow->write_bytes(command,len+4);
-    mgos_msleep(5);
-    _ow->read_bytes(status, 2);
-    b = _ow->reset();
-    res =  (b == 1);
-
-//  LOG(LL_WARN, ("Status %X %X",status[0],status[1]));
-    res =check_status(status);
-    return  res;
+    return ow_write_bytes(deviceAddress,len+2, command);
 }
 
 bool  DS28E17Rmt::ReadDataStop(uint8_t* deviceAddress, uint8_t i2c_addr, uint8_t len, uint8_t* data){
 //  LOG(LL_WARN, ("ReadDataStop"));
-    bool res = true;
-    uint8_t  status[2] = {0};
     uint8_t command[5] = {Read_Data_Stop, i2c_addr, len};
-    packet_crc(command,3);
-    int b = _ow->reset();
-    if (b == 0) return false;
-    _ow->select(deviceAddress);
-    _ow->write_bytes(command,5);
-    mgos_msleep(50);
-    _ow->read_bytes(status, 1);
-    _ow->read_bytes(data, len);
-//  LOG(LL_WARN, ("Status %X %X",status[0],status[1]));
-    b = _ow->reset();
-    res = (b == 1);
-    res =check_status(status);
-    return  res;
+    return ow_read_bytes(deviceAddress, command,  3, data, len);
 }
 bool  DS28E17Rmt::WriteReadDataStop(uint8_t* deviceAddress, uint8_t i2c_addr, uint8_t len_wr, uint8_t* data_wr,
                     uint8_t len_r, uint8_t * data_r){
 //  LOG(LL_WARN, ("WriteReadDataStop"));
-    bool res = true;
-    uint8_t  status[2] = {0};
     uint8_t command[ len_wr + 6 ] = {Write_Read_Data_Stop, i2c_addr, len_wr};
     memcpy(&command[3],data_wr,len_wr );
     command[len_wr + 4] = len_r;
-    packet_crc(command,len_wr+5);
-    int b = _ow->reset();
-    if (b == 0) return false;
-    _ow->select(deviceAddress);
-    _ow->write_bytes(command,len_wr + 7);
-    mgos_msleep(50);
-    _ow->read_bytes(status, 1);
-    mgos_msleep(5);
-    _ow->read_bytes(data_r, len_r);
-//  LOG(LL_WARN, ("Status %X %X",status[0],status[1]));
-    b = _ow->reset();
-    res = (b == 1);
-    res =check_status(status);
-    return  res;
+    return ow_read_bytes(deviceAddress, command,  len_wr, data_r, len_r);
 }
 /*
  * 00b = I 2 C speed set to 100kHz
