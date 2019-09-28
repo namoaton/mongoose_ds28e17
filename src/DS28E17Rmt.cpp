@@ -75,7 +75,6 @@ bool DS28E17Rmt::ow_write_bytes(uint8_t* deviceAddress, uint8_t len, uint8_t *by
     _ow->read_bytes(status, 2);
     b = _ow->reset();
     res =  (b == 1);
-//  LOG(LL_WARN, ("Status %X %X",status[0],status[1]));
     res =check_status(status);
     return  res;
 }
@@ -99,10 +98,8 @@ bool  DS28E17Rmt::ow_read_bytes(uint8_t* deviceAddress, uint8_t *command, uint8_
 
 void DS28E17Rmt::begin(void) {
   DeviceAddress deviceAddress;
-
   _ow->reset_search();
   _devices = 0;  // Reset the number of devices when we enumerate wire devices
-
   while (_ow->search(deviceAddress)) {
     if (validAddress(deviceAddress)) {
         LOG(LL_WARN, ("Found Bridge\n"));
@@ -134,31 +131,19 @@ bool DS28E17Rmt::validFamily(const uint8_t *deviceAddress) {
 
 bool DS28E17Rmt::getAddress(uint8_t *deviceAddress, uint8_t index) {
   uint8_t depth = 0;
-
   _ow->reset_search();
-
   while (depth <= index && _ow->search(deviceAddress)) {
     if (depth == index && validAddress(deviceAddress)) return true;
     depth++;
   }
-
   return false;
 }
 
 bool DS28E17Rmt::check_status(uint8_t* status){
     uint8_t res = true;
-    if((status[0]&0x01 )== 0x1)
-    {
-        res = false;
-    }
-    if((status[0]&0x02 )== 0x2)
-    {
-        res = false;
-    }
-    if((status[0]&0x04 )== 0x4)
-    {
-        res = false;
-    }
+    if((status[0]&0x01 )== 0x1) res = false;
+    if((status[0]&0x02 )== 0x2) res = false;
+    if((status[0]&0x04 )== 0x4) res = false;
     return  res;
 }
 uint16_t  DS28E17Rmt::calculateCrc16(uint16_t crc16, uint16_t data)
@@ -166,21 +151,17 @@ uint16_t  DS28E17Rmt::calculateCrc16(uint16_t crc16, uint16_t data)
     const uint16_t oddparity[] = { 0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 0 };
     data = (data ^ crc16) & 0xff;
     crc16 >>= 8;
-
     if (oddparity[data & 0xf] ^ oddparity[data >> 4])
     {
         crc16 ^= 0xc001;
     }
-
     data <<= 6;
     crc16 ^= data;
     data <<= 1;
     crc16 ^= data;
-
     return crc16;
 }
 uint16_t  DS28E17Rmt::crc16(uint8_t* input, uint16_t len, uint16_t  crc) {
-
     for (size_t i = 0; i < len; i++)
     {
         crc = calculateCrc16(crc, input[i]);
@@ -200,13 +181,7 @@ uint16_t DS28E17Rmt::packet_crc(uint8_t* packet,uint16_t len)
 }
 
 bool  DS28E17Rmt::ReadDeviceRev(uint8_t* deviceAddress, uint8_t* rev){
-    int b = _ow->reset();
-    if (b == 0) return false;
-    _ow->select(deviceAddress);
-    _ow->write(Read_Device_Rev);
-    _ow->read_bytes(rev, 1);
-    b = _ow->reset();
-    return (b == 1);
+    return ow_read_byte(deviceAddress, Read_Device_Rev, rev);
 }
 
 bool  DS28E17Rmt::WriteDataStop(uint8_t* deviceAddress, uint8_t i2c_addr, uint8_t len, uint8_t* data){
