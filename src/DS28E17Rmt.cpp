@@ -157,11 +157,6 @@ bool  DS28E17Rmt::WriteDataStop(uint8_t* deviceAddress, uint8_t i2c_addr, uint8_
     uint8_t  status[2] = {0};
     uint8_t command[len + 5] = {Write_Data_Stop, i2c_addr, len};
     memcpy(&command[3],data,len );
-   /* uint16_t  crc = 0;
-    crc = crc16(command, len+3, crc);
-    crc =~crc;
-    command[len+4] = crc >>8;
-    command[len+3] = crc & 0xff;*/
     packet_crc(command,len+3);
     int b = _ow->reset();
     if (b == 0) return false;
@@ -182,11 +177,7 @@ bool  DS28E17Rmt::WriteDataNoStop(uint8_t* deviceAddress, uint8_t i2c_addr, uint
     uint8_t  status[2] = {0};
     uint8_t command[len + 5] = {Write_Data_No_Stop, i2c_addr, len};
     memcpy(&command[3],data,len );
-    uint16_t  crc = 0;
-    crc = crc16(command, len+3, crc);
-    crc =~crc;
-    command[len+4] = crc >>8;
-    command[len+3] = crc & 0xff;
+    packet_crc(command,len+3);
     int b = _ow->reset();
     if (b == 0) return false;
     _ow->select(deviceAddress);
@@ -206,11 +197,7 @@ bool  DS28E17Rmt::WriteDataOnlyStop(uint8_t* deviceAddress, uint8_t len, uint8_t
     uint8_t  status[2] = {0};
     uint8_t command[len + 4] = {Write_Data_Only_Stop, len};
     memcpy(&command[2],data,len );
-    uint16_t  crc = 0;
-    crc = crc16(command, len+2,crc);
-    crc =~crc;
-    command[len+3] = crc >>8;
-    command[len+2] = crc & 0xff;
+    packet_crc(command,len+2);
     int b = _ow->reset();
     if (b == 0) return false;
     _ow->select(deviceAddress);
@@ -229,11 +216,7 @@ bool  DS28E17Rmt::WriteDataOnly(uint8_t* deviceAddress, uint8_t len, uint8_t* da
     uint8_t  status[2] = {0};
     uint8_t command[len + 4] = {Write_Data_Only, len};
     memcpy(&command[2],data,len );
-    uint16_t  crc = 0;
-    crc = crc16(command, len+2,crc);
-    crc =~crc;
-    command[len+3] = crc >>8;
-    command[len+2] = crc & 0xff;
+    packet_crc(command,len+2);
     int b = _ow->reset();
     if (b == 0) return false;
     _ow->select(deviceAddress);
@@ -253,11 +236,7 @@ bool  DS28E17Rmt::ReadDataStop(uint8_t* deviceAddress, uint8_t i2c_addr, uint8_t
     bool res = true;
     uint8_t  status[2] = {0};
     uint8_t command[5] = {Read_Data_Stop, i2c_addr, len};
-    uint16_t  crc = 0;
-    crc = crc16(command, 3, crc);
-    crc =~crc;
-    command[4] = crc >>8;
-    command[3] = crc & 0xff;
+    packet_crc(command,3);
     int b = _ow->reset();
     if (b == 0) return false;
     _ow->select(deviceAddress);
@@ -279,11 +258,7 @@ bool  DS28E17Rmt::WriteReadDataStop(uint8_t* deviceAddress, uint8_t i2c_addr, ui
     uint8_t command[ len_wr + 6 ] = {Write_Read_Data_Stop, i2c_addr, len_wr};
     memcpy(&command[3],data_wr,len_wr );
     command[len_wr + 4] = len_r;
-    uint16_t  crc = 0;
-    crc = crc16(command, len_wr + 5, crc);
-    crc =~crc;
-    command[len_wr + 6] = crc >>8;
-    command[len_wr + 5] = crc & 0xff;
+    packet_crc(command,len_wr+5);
     int b = _ow->reset();
     if (b == 0) return false;
     _ow->select(deviceAddress);
