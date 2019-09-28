@@ -61,6 +61,10 @@ class DS28E17Rmt {
     bool check_status(uint8_t* status);
     uint16_t calculateCrc16(uint16_t crc16, uint16_t data);
     uint16_t crc16(uint8_t* input, uint16_t len, uint16_t  crc);
+    /*
+    * Set 2 crc bytes at the end of packet and return total length of packets to send
+    */
+    uint16_t packet_crc(uint8_t* packet, uint8_t len);
     bool ReadDeviceRev(uint8_t* deviceAddress, uint8_t* rev);
     bool WriteDataStop(uint8_t* deviceAddress, uint8_t  i2c_addr, uint8_t len, uint8_t* data);
     bool WriteDataNoStop(uint8_t* deviceAddress, uint8_t i2c_addr, uint8_t len, uint8_t* data);

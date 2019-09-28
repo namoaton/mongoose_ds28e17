@@ -103,7 +103,6 @@ bool DS28E17Rmt::check_status(uint8_t* status){
     }
     return  res;
 }
-
 uint16_t  DS28E17Rmt::calculateCrc16(uint16_t crc16, uint16_t data)
 {
     const uint16_t oddparity[] = { 0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 0 };
@@ -122,8 +121,6 @@ uint16_t  DS28E17Rmt::calculateCrc16(uint16_t crc16, uint16_t data)
 
     return crc16;
 }
-
-
 uint16_t  DS28E17Rmt::crc16(uint8_t* input, uint16_t len, uint16_t  crc) {
 
     for (size_t i = 0; i < len; i++)
@@ -131,6 +128,17 @@ uint16_t  DS28E17Rmt::crc16(uint8_t* input, uint16_t len, uint16_t  crc) {
         crc = calculateCrc16(crc, input[i]);
     }
     return crc;
+}
+
+
+uint16_t DS28E17Rmt::packet_crc(uint8_t* packet,uint16_t len)
+{
+    uint16_t  crc = 0;
+    crc = crc16(packet, len, crc);
+    crc =~crc;
+    packet[len+1] = crc & 0xff;
+    packet[len+2] = crc >>8;
+    return len+3;
 }
 
 bool  DS28E17Rmt::ReadDeviceRev(uint8_t* deviceAddress, uint8_t* rev){
@@ -149,17 +157,18 @@ bool  DS28E17Rmt::WriteDataStop(uint8_t* deviceAddress, uint8_t i2c_addr, uint8_
     uint8_t  status[2] = {0};
     uint8_t command[len + 5] = {Write_Data_Stop, i2c_addr, len};
     memcpy(&command[3],data,len );
-    uint16_t  crc = 0;
+   /* uint16_t  crc = 0;
     crc = crc16(command, len+3, crc);
     crc =~crc;
     command[len+4] = crc >>8;
-    command[len+3] = crc & 0xff;
+    command[len+3] = crc & 0xff;*/
+//    packet_crc(command,len+3);
     int b = _ow->reset();
     if (b == 0) return false;
     _ow->select(deviceAddress);
     _ow->write_bytes(command,len+5);
      mgos_msleep(5);
-    _ow->read_bytes(status, 2);
+    _ow->read_bytes(status,packet_crc(command,len+3));
 //    LOG(LL_WARN, ("Status %X %X",status[0],status[1]));
     b = _ow->reset();
     res = (b == 1);
