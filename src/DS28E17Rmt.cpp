@@ -138,7 +138,7 @@ uint16_t DS28E17Rmt::packet_crc(uint8_t* packet,uint16_t len)
     crc =~crc;
     packet[ len ] = crc & 0xff;
     packet[ len + 1 ] = crc >>8;
-    return len + 3;
+    return len + 2;
 }
 
 bool  DS28E17Rmt::ReadDeviceRev(uint8_t* deviceAddress, uint8_t* rev){
@@ -201,7 +201,7 @@ bool  DS28E17Rmt::WriteDataOnlyStop(uint8_t* deviceAddress, uint8_t len, uint8_t
     int b = _ow->reset();
     if (b == 0) return false;
     _ow->select(deviceAddress);
-    _ow->write_bytes(command,len+5);
+    _ow->write_bytes(command,len+4);
      mgos_msleep(5);
     _ow->read_bytes(status, 2);
     b = _ow->reset();
@@ -220,7 +220,7 @@ bool  DS28E17Rmt::WriteDataOnly(uint8_t* deviceAddress, uint8_t len, uint8_t* da
     int b = _ow->reset();
     if (b == 0) return false;
     _ow->select(deviceAddress);
-    _ow->write_bytes(command,len+5);
+    _ow->write_bytes(command,len+4);
     mgos_msleep(5);
     _ow->read_bytes(status, 2);
     b = _ow->reset();
@@ -240,10 +240,10 @@ bool  DS28E17Rmt::ReadDataStop(uint8_t* deviceAddress, uint8_t i2c_addr, uint8_t
     int b = _ow->reset();
     if (b == 0) return false;
     _ow->select(deviceAddress);
-    _ow->write_bytes(command,len+4);
+    _ow->write_bytes(command,5);
     mgos_msleep(50);
     _ow->read_bytes(status, 1);
-//    _ow->read_bytes(data, len);
+    _ow->read_bytes(data, len);
 //  LOG(LL_WARN, ("Status %X %X",status[0],status[1]));
     b = _ow->reset();
     res = (b == 1);
@@ -262,7 +262,7 @@ bool  DS28E17Rmt::WriteReadDataStop(uint8_t* deviceAddress, uint8_t i2c_addr, ui
     int b = _ow->reset();
     if (b == 0) return false;
     _ow->select(deviceAddress);
-    _ow->write_bytes(command,len_wr + 5);
+    _ow->write_bytes(command,len_wr + 7);
     mgos_msleep(50);
     _ow->read_bytes(status, 1);
     mgos_msleep(5);
