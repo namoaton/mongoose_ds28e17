@@ -73,6 +73,7 @@ bool mgos_ds28e17_rmt_write_data_no_stop(DS28E17Rmt *dt, uint8_t* deviceAddress,
 bool mgos_ds28e17_rmt_write_data_only_stop(DS28E17Rmt *dt, uint8_t* deviceAddress, uint8_t len, uint8_t* data);
 bool mgos_ds28e17_rmt_write_data_only(DS28E17Rmt *dt, uint8_t* deviceAddress, uint8_t len, uint8_t* data);
 bool mgos_ds28e17_rmt_read_data_stop(DS28E17Rmt *dt,uint8_t* deviceAddress, uint8_t i2c_addr, uint8_t len, uint8_t* data);
+bool mgos_ds28e17_rmt_write_read_data_stop(DS28E17Rmt *dt, uint8_t* deviceAddress, uint8_t i2c_addr, uint8_t len_wr, uint8_t* data_wr, uint8_t len_r, uint8_t * data_r);
 /*
  * Read bridge config
  */

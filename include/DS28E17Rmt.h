@@ -67,6 +67,7 @@ class DS28E17Rmt {
     bool WriteDataOnlyStop(uint8_t* deviceAddress, uint8_t len, uint8_t* data);
     bool WriteDataOnly(uint8_t* deviceAddress, uint8_t len, uint8_t* data);
     bool ReadDataStop(uint8_t* deviceAddress, uint8_t i2c_addr, uint8_t len, uint8_t* data);
+    bool WriteReadDataStop(uint8_t* deviceAddress, uint8_t i2c_addr, uint8_t len_wr, uint8_t* data_wr, uint8_t len_r, uint8_t * data_r);
     bool ReadConfig(uint8_t* deviceAddress, uint8_t * config);
     bool WriteConfig(uint8_t* deviceAddress, uint8_t * config);
     bool EnableSleep(uint8_t* deviceAddress);

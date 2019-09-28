@@ -71,7 +71,10 @@ bool mgos_ds28e17_rmt_read_data_stop(DS28E17Rmt *dt,uint8_t* deviceAddress, uint
     if (dt == nullptr) return false;
     return dt->ReadDataStop((uint8_t *) deviceAddress, i2c_addr,len, data);
 }
-
+bool mgos_ds28e17_rmt_write_read_data_stop(DS28E17Rmt *dt, uint8_t* deviceAddress, uint8_t i2c_addr, uint8_t len_wr, uint8_t* data_wr, uint8_t len_r, uint8_t * data_r){
+    if (dt == nullptr) return false;
+    return dt->WriteReadDataStop((uint8_t *) deviceAddress, i2c_addr,len_wr, data_wr,len_r,data_r);
+}
 bool mgos_ds28e17_rmt_read_device_config(DS28E17Rmt *dt, char *addr, uint8_t *config){
     if (dt == nullptr) return false;
     return dt->ReadConfig((uint8_t *) addr, config);
