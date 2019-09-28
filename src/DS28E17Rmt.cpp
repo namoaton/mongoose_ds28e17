@@ -136,9 +136,9 @@ uint16_t DS28E17Rmt::packet_crc(uint8_t* packet,uint16_t len)
     uint16_t  crc = 0;
     crc = crc16(packet, len, crc);
     crc =~crc;
-    packet[len+1] = crc & 0xff;
-    packet[len+2] = crc >>8;
-    return len+3;
+    packet[ len ] = crc & 0xff;
+    packet[ len + 1 ] = crc >>8;
+    return len + 3;
 }
 
 bool  DS28E17Rmt::ReadDeviceRev(uint8_t* deviceAddress, uint8_t* rev){
