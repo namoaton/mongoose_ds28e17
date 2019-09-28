@@ -105,5 +105,9 @@ class DS28E17Rmt {
    * Set to true if we created _ow
    */
   bool _ownOnewire;
+  bool ow_write_byte(uint8_t* deviceAddress, uint8_t command, uint8_t *byte);
+  bool ow_read_byte(uint8_t* deviceAddress, uint8_t command, uint8_t *byte);
+  bool ow_write_command(uint8_t* deviceAddress, uint8_t command);
+
 
 };

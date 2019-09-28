@@ -37,6 +37,32 @@ void DS28E17Rmt::setOneWire(OnewireRmt *ow) {
   _devices = 0;
   _parasite = false;
 }
+bool DS28E17Rmt::ow_write_command(uint8_t* deviceAddress, uint8_t command){
+    int b = _ow->reset();
+    if (b == 0) return false;
+    _ow->select(deviceAddress);
+    _ow->write(command);
+    b = _ow->reset();
+    return (b == 1);
+}
+bool DS28E17Rmt::ow_read_byte(uint8_t* deviceAddress,  uint8_t command, uint8_t *byte){
+    int b = _ow->reset();
+    if (b == 0) return false;
+    _ow->select(deviceAddress);
+    _ow->write(command);
+    _ow->read_bytes(byte, 1);
+    b = _ow->reset();
+    return (b == 1);
+}
+bool  DS28E17Rmt::ow_write_byte(uint8_t* deviceAddress, uint8_t command, uint8_t *byte{
+        int b = _ow->reset();
+        if (b == 0) return false;
+        _ow->select(deviceAddress);
+        _ow->write(command);
+        _ow->write_bytes(byte, 1);
+        b = _ow->reset();
+        return (b == 1)
+};
 // initialise the bus
 
 void DS28E17Rmt::begin(void) {
@@ -280,30 +306,34 @@ bool  DS28E17Rmt::WriteReadDataStop(uint8_t* deviceAddress, uint8_t i2c_addr, ui
  * 11b = Not used
  */
 bool   DS28E17Rmt::ReadConfig(uint8_t* deviceAddress, uint8_t * config){
-    int b = _ow->reset();
+    /*int b = _ow->reset();
     if (b == 0) return false;
     _ow->select(deviceAddress);
     _ow->write(Read_Config);
     _ow->read_bytes(config, 1);
     b = _ow->reset();
-    return (b == 1);
+    return (b == 1);*/
+    return ow_read_byte(deviceAddress, Read_Config, config);
 }
 
 bool   DS28E17Rmt::WriteConfig(uint8_t* deviceAddress, uint8_t * config){
-    int b = _ow->reset();
+    /*int b = _ow->reset();
     if (b == 0) return false;
     _ow->select(deviceAddress);
     _ow->write(Write_Config);
     _ow->write_bytes(config, 1);
     b = _ow->reset();
-    return (b == 1);
+    return (b == 1);*/
+    return  ow_write_byte(deviceAddress,Write_Config, config);
+
 }
 
 bool   DS28E17Rmt::EnableSleep(uint8_t* deviceAddress){
-    int b = _ow->reset();
+   /* int b = _ow->reset();
     if (b == 0) return false;
     _ow->select(deviceAddress);
     _ow->write(Enable_Sleep);
     b = _ow->reset();
-    return (b == 1);
+    return (b == 1);*/
+    return  ow_write_command(deviceAddress,Enable_Sleep);
 }
