@@ -63,6 +63,22 @@ bool  DS28E17Rmt::ow_write_byte(uint8_t* deviceAddress, uint8_t command, uint8_t
         b = _ow->reset();
         return (b == 1);
 }
+bool DS28E17Rmt::ow_write_bytes(uint8_t* deviceAddress, uint8_t len, uint8_t *bytes){
+    uint8_t  res = 1;
+    uint8_t  status[2] = {0};
+    packet_crc(bytes,len);
+    int b = _ow->reset();
+    if (b == 0) return false;
+    _ow->select(deviceAddress);
+    _ow->write_bytes(bytes,len+2);
+    mgos_msleep(5);
+    _ow->read_bytes(status, 2);
+    b = _ow->reset();
+    res =  (b == 1);
+//  LOG(LL_WARN, ("Status %X %X",status[0],status[1]));
+    res =check_status(status);
+    return  res;
+}
 // initialise the bus
 
 void DS28E17Rmt::begin(void) {
@@ -179,11 +195,12 @@ bool  DS28E17Rmt::ReadDeviceRev(uint8_t* deviceAddress, uint8_t* rev){
 
 bool  DS28E17Rmt::WriteDataStop(uint8_t* deviceAddress, uint8_t i2c_addr, uint8_t len, uint8_t* data){
 //    LOG(LL_WARN, ("WriteDataStop"));
-    uint8_t  res = 1;
-    uint8_t  status[2] = {0};
+    //uint8_t  res = 1;
+    //uint8_t  status[2] = {0};
     uint8_t command[len + 5] = {Write_Data_Stop, i2c_addr, len};
     memcpy(&command[3],data,len );
-    packet_crc(command,len+3);
+    return ow_write_bytes(deviceAddress,len+3, command);
+   /* packet_crc(command,len+3);
     int b = _ow->reset();
     if (b == 0) return false;
     _ow->select(deviceAddress);
@@ -194,7 +211,7 @@ bool  DS28E17Rmt::WriteDataStop(uint8_t* deviceAddress, uint8_t i2c_addr, uint8_
     b = _ow->reset();
     res = (b == 1);
     res =check_status(status);
-    return  res;
+    return  res;*/
 }
 
 bool  DS28E17Rmt::WriteDataNoStop(uint8_t* deviceAddress, uint8_t i2c_addr, uint8_t len, uint8_t* data){
@@ -306,34 +323,14 @@ bool  DS28E17Rmt::WriteReadDataStop(uint8_t* deviceAddress, uint8_t i2c_addr, ui
  * 11b = Not used
  */
 bool   DS28E17Rmt::ReadConfig(uint8_t* deviceAddress, uint8_t * config){
-    /*int b = _ow->reset();
-    if (b == 0) return false;
-    _ow->select(deviceAddress);
-    _ow->write(Read_Config);
-    _ow->read_bytes(config, 1);
-    b = _ow->reset();
-    return (b == 1);*/
     return ow_read_byte(deviceAddress, Read_Config, config);
 }
 
 bool   DS28E17Rmt::WriteConfig(uint8_t* deviceAddress, uint8_t * config){
-    /*int b = _ow->reset();
-    if (b == 0) return false;
-    _ow->select(deviceAddress);
-    _ow->write(Write_Config);
-    _ow->write_bytes(config, 1);
-    b = _ow->reset();
-    return (b == 1);*/
     return  ow_write_byte(deviceAddress,Write_Config, config);
 
 }
 
 bool   DS28E17Rmt::EnableSleep(uint8_t* deviceAddress){
-   /* int b = _ow->reset();
-    if (b == 0) return false;
-    _ow->select(deviceAddress);
-    _ow->write(Enable_Sleep);
-    b = _ow->reset();
-    return (b == 1);*/
     return  ow_write_command(deviceAddress,Enable_Sleep);
 }
