@@ -162,11 +162,11 @@ bool  DS28E17Rmt::WriteDataStop(uint8_t* deviceAddress, uint8_t i2c_addr, uint8_
     crc =~crc;
     command[len+4] = crc >>8;
     command[len+3] = crc & 0xff;*/
-//    packet_crc(command,len+3);
+    packet_crc(command,len+3);
     int b = _ow->reset();
     if (b == 0) return false;
     _ow->select(deviceAddress);
-    _ow->write_bytes(command,packet_crc(command,len+3));// len+5
+    _ow->write_bytes(command,len+5);
      mgos_msleep(5);
     _ow->read_bytes(status,2);
 //    LOG(LL_WARN, ("Status %X %X",status[0],status[1]));
