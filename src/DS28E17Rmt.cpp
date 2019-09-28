@@ -268,6 +268,10 @@ bool  DS28E17Rmt::ReadDataStop(uint8_t* deviceAddress, uint8_t i2c_addr, uint8_t
     {
         res = false;
     }
+    if((status[0]&0x04 )== 0x4)
+    {
+        res = false;
+    }
     return  res;
 }
 bool  DS28E17Rmt::WriteReadDataStop(uint8_t* deviceAddress, uint8_t i2c_addr, uint8_t len_wr, uint8_t* data_wr,
