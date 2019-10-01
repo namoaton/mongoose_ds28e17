@@ -84,11 +84,11 @@ bool  DS28E17Rmt::ow_read_bytes(uint8_t* deviceAddress, uint8_t *command, uint8_
     packet_crc(command,len_w);
     int b = _ow->reset();
     if (b == 0) return false;
-    _ow->select(deviceAddress);
-    _ow->write_bytes(command,len_w + 2);
-    mgos_msleep(10);
+//    mgos_msleep(10);
 //    _ow->read_bytes(status, 1);
     uint8_t read_bytes[len_r+1];
+    _ow->select(deviceAddress);
+    _ow->write_bytes(command,len_w + 2);
     _ow->read_bytes(read_bytes, len_r+1);
     b = _ow->reset();
     memcpy(status,read_bytes,1);
