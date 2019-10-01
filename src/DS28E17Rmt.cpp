@@ -92,6 +92,9 @@ bool  DS28E17Rmt::ow_read_bytes(uint8_t* deviceAddress, uint8_t *command, uint8_
     b = _ow->reset();
     res = (b == 1);
     res =check_status(status);
+    for (int i =0;i<len_r;i++){
+        LOG(LL_WARN, ("buffer[%d] = %X", i,bytes[i]));
+    }
     return  res;
 }
 // initialise the bus
