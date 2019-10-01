@@ -88,8 +88,11 @@ bool  DS28E17Rmt::ow_read_bytes(uint8_t* deviceAddress, uint8_t *command, uint8_
     _ow->write_bytes(command,len_w + 2);
     mgos_msleep(50);
     _ow->read_bytes(status, 1);
-    _ow->read_bytes(bytes, len_r);
+    uint8_t read_bytes[len_r+1];
+    _ow->read_bytes(read_bytes, len_r+1);
     b = _ow->reset();
+    memcpy(status,read_bytes,1);
+    memcpy(bytes,read_bytes+1,len_r);
     res = (b == 1);
      res =check_status(status);
      if (len_r>1) {
