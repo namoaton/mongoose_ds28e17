@@ -81,20 +81,17 @@ bool DS28E17Rmt::ow_write_bytes(uint8_t* deviceAddress, uint8_t len, uint8_t *by
 bool  DS28E17Rmt::ow_read_bytes(uint8_t* deviceAddress, uint8_t *command, uint8_t len_w, uint8_t *bytes, uint8_t len_r){
     bool res = true;
     uint8_t  status[2] = {0};
-    uint8_t read_bytes [len_r+1]={0};
     packet_crc(command,len_w);
     int b = _ow->reset();
     if (b == 0) return false;
     _ow->select(deviceAddress);
     _ow->write_bytes(command,len_w + 2);
     mgos_msleep(50);
-//    _ow->read_bytes(status, 1);
-    _ow->read_bytes(read_bytes, len_r+1);
+    _ow->read_bytes(status, 1);
+    _ow->read_bytes(bytes, len_r);
     b = _ow->reset();
     res = (b == 1);
-    memcpy(status,read_bytes,1);
-    memcpy(bytes,&read_bytes[1],len_r);
-    res =check_status(status);
+     res =check_status(status);
     for (int i =0; i<len_r; i++){
         LOG(LL_WARN, ("buffer[%d] = %X", i,bytes[i]));
     }
