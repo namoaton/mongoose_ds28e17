@@ -96,11 +96,11 @@ bool  DS28E17Rmt::ow_read_bytes(uint8_t* deviceAddress, uint8_t *command, uint8_
 //    memcpy(bytes,&read_bytes[1],len_r);
     res = (b == 1);
      res =check_status(status);
-     if (len_r>1) {
-         for (int i = 0; i < len_r; i++) {
-             LOG(LL_WARN, ("buffer[%d] = %X", i, bytes[i]));
-         }
-     }
+//     if (len_r>1) {
+//         for (int i = 0; i < len_r; i++) {
+//             LOG(LL_WARN, ("buffer[%d] = %X", i, bytes[i]));
+//         }
+//     }
     return  res;
 }
 // initialise the bus
