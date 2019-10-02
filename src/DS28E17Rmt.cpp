@@ -81,6 +81,7 @@ bool DS28E17Rmt::ow_write_bytes(uint8_t* deviceAddress, uint8_t len, uint8_t *by
 bool  DS28E17Rmt::ow_read_bytes(uint8_t* deviceAddress, uint8_t *command, uint8_t len_w, uint8_t *bytes, uint8_t len_r){
     bool res = true;
     uint8_t  status[2] = {0};
+    uint8_t  read_buffer[len_r]={0};
     packet_crc(command,len_w);
     int b = _ow->reset();
     if (b == 0) return false;
@@ -90,7 +91,7 @@ bool  DS28E17Rmt::ow_read_bytes(uint8_t* deviceAddress, uint8_t *command, uint8_
     mgos_msleep(10);
     _ow->read_bytes(status, 1);
     mgos_msleep(1);
-    _ow->read_bytes(bytes, len_r);
+    _ow->read_bytes(read_buffer, len_r);
     b = _ow->reset();
 //    memcpy(status,read_bytes,1);
 //    memcpy(bytes,&read_bytes[1],len_r);
@@ -99,8 +100,8 @@ bool  DS28E17Rmt::ow_read_bytes(uint8_t* deviceAddress, uint8_t *command, uint8_
 
     uint8_t last_bit = 0;
     for(int f=len_r-1;f>=0;f--){
-        bytes[f] =(bytes[f]>>1)|last_bit<<7;
-        last_bit =bytes[f] & 1;
+        bytes[f] =(read_buffer[f]>>1)|last_bit<<7;
+        last_bit =read_buffer[f] & 1;
     }
 //     if (len_r>1) {
 //         for (int i = 0; i < len_r; i++) {
