@@ -246,10 +246,13 @@ bool  DS28E17Rmt::ReadDataStop(uint8_t* deviceAddress, uint8_t i2c_addr, uint8_t
 }
 bool  DS28E17Rmt::WriteReadDataStop(uint8_t* deviceAddress, uint8_t i2c_addr, uint8_t len_wr, uint8_t* data_wr,
                     uint8_t len_r, uint8_t * data_r){
-//  LOG(LL_WARN, ("WriteReadDataStop"));
+  LOG(LL_WARN, ("WriteReadDataStop"));
     uint8_t command[ len_wr + 6 ] = {Write_Read_Data_Stop, i2c_addr, len_wr};
     memcpy(&command[3],data_wr,len_wr );
     command[len_wr + 3] = len_r;
+    for (int i =0;i<len_wr+6;i++){
+        LOG(LL_WARN, ("cmd[%d] = %X",i,command[i]));
+    }
     return ow_read_bytes(deviceAddress, command,  len_wr, data_r, len_r);
 }
 /*
