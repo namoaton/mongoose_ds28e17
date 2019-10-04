@@ -31,7 +31,7 @@ DS28E17Rmt::~DS28E17Rmt() {
 void DS28E17Rmt::setDeviceAddress(uint8_t* dev_addr){
     memcpy(deviceAddress,dev_addr,8);
 }
-uint8_t * DS28E17Rmt::getDeviceAddress(){
+uint8_t* DS28E17Rmt::getDeviceAddress(){
     return deviceAddress;
 }
 
