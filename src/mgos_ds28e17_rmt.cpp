@@ -28,7 +28,7 @@ void mgos_ds28e17_rmt_set_addr(uint8_t* addr){
     dt->setDeviceAddress(addr);
 }
 
-DeviceAddress mgos_ds28e17_rmt_get_addr(){
+uint8_t *mgos_ds28e17_rmt_get_addr(){
     DS28E17Rmt * dt =mgos_ds28e17_rmt_get_global_ds();
     return dt->deviceAddress;
 }

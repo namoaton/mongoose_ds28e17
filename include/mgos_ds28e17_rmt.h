@@ -17,7 +17,7 @@ static DS28E17Rmt * globalDS;
 void mgos_ds28e17_rmt_set_global_ds(DS28E17Rmt *ds);
 DS28E17Rmt* mgos_ds28e17_rmt_get_global_ds();
 void mgos_ds28e17_rmt_set_addr(uint8_t* addr);
-DeviceAddress mgos_ds28e17_rmt_get_addr();
+uint8_t * mgos_ds28e17_rmt_get_addr();
 /* Initializes the DS28E17Rmt driver with a `OnewireRmt*` object.
  * Return value: handle opaque pointer.
  */
