@@ -19,6 +19,16 @@ void mgos_ds28e17_rmt_close(DS28E17Rmt *dt) {
   }
 }
 
+bool mgos_ds28e17_rmt_set_global_ds(DS28E17Rmt *ds){
+    globalDS = ds;
+}
+void mgos_ds28e17_rmt_set_addr(uint8_t* addr){
+    DS28E17Rmt * dt =mgos_ds28e17_rmt_get_global_ds();
+    dt->setDeviceAddress(addr);
+}
+DS28E17Rmt* mgos_ds28e17_rmt_get_global_ds(){
+    return globalDS;
+}
 void mgos_ds28e17_rmt_begin(DS28E17Rmt *dt) {
   if (dt == nullptr) return;
   dt->begin();

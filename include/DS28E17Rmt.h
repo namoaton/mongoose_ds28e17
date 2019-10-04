@@ -27,6 +27,10 @@ class DS28E17Rmt {
 
   ~DS28E17Rmt();
   static DeviceAddress deviceAddress = {0,0,0,0,0,0,0,0};
+    /*
+   * The OneWire object
+   */
+    static  OnewireRmt *_ow;
   void setDeviceAddress(uint8_t* dev_addr);
   void setOneWire(OnewireRmt *ow);
 
@@ -78,10 +82,7 @@ class DS28E17Rmt {
     bool EnableSleep(uint8_t* deviceAddress);
 
  private:
-  /*
-   * The OneWire object
-   */
-  OnewireRmt *_ow;
+
 
   /*
    * count of devices on the bus
