@@ -73,11 +73,13 @@ bool  DS28E17Rmt::ow_write_byte(uint8_t* deviceAddress, uint8_t command, uint8_t
 bool DS28E17Rmt::ow_write_bytes(uint8_t* deviceAddress, uint8_t len, uint8_t *bytes){
     uint8_t  res = 1;
     uint8_t  status[2] = {0};
+    uint8_t  cmd_crc[len+2];
+    memcpy(cmd_crc,bytes,len);
     packet_crc(bytes,len);
     int b = _ow->reset();
     if (b == 0) return false;
     _ow->select(deviceAddress);
-    _ow->write_bytes(bytes,len+2);
+    _ow->write_bytes(cmd_crc,len+2);
     mgos_msleep(5);
     _ow->read_bytes(status, 2);
     b = _ow->reset();
@@ -89,11 +91,14 @@ bool  DS28E17Rmt::ow_read_bytes(uint8_t* deviceAddress, uint8_t *command, uint8_
     bool res = true;
     uint8_t  status[2] = {0};
     uint8_t  read_buffer[len_r]={0};
-    packet_crc(command,len_w);
+    uint8_t  cmd_crc[len_w+2];
+    memcpy(cmd_crc,command,len_w);
+    packet_crc(cmd_crc,len_w);
+//    packet_crc(command,len_w);
     int b = _ow->reset();
     if (b == 0) return false;
     _ow->select(deviceAddress);
-    _ow->write_bytes(command,len_w + 2);
+    _ow->write_bytes(cmd_crc,len_w + 2);
     mgos_msleep(10);
     _ow->read_bytes(status, 1);
     mgos_msleep(1);
@@ -244,7 +249,7 @@ bool  DS28E17Rmt::WriteReadDataStop(uint8_t* deviceAddress, uint8_t i2c_addr, ui
 //  LOG(LL_WARN, ("WriteReadDataStop"));
     uint8_t command[ len_wr + 6 ] = {Write_Read_Data_Stop, i2c_addr, len_wr};
     memcpy(&command[3],data_wr,len_wr );
-    command[len_wr + 4] = len_r;
+    command[len_wr + 3] = len_r;
     return ow_read_bytes(deviceAddress, command,  len_wr, data_r, len_r);
 }
 /*
