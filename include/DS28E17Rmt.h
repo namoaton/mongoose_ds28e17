@@ -29,6 +29,7 @@ class DS28E17Rmt {
    DeviceAddress deviceAddress;
 
   void setDeviceAddress(uint8_t* dev_addr);
+  DeviceAddress getDeviceAddress();
   void setOneWire(OnewireRmt *ow);
 
   /*
