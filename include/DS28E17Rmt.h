@@ -27,10 +27,7 @@ class DS28E17Rmt {
 
   ~DS28E17Rmt();
   static DeviceAddress deviceAddress;
-    /*
-   * The OneWire object
-   */
-    static  OnewireRmt *_ow;
+
   void setDeviceAddress(uint8_t* dev_addr);
   void setOneWire(OnewireRmt *ow);
 
@@ -83,7 +80,10 @@ class DS28E17Rmt {
 
  private:
 
-
+    /*
+   * The OneWire object
+   */
+    static  OnewireRmt *_ow;
   /*
    * count of devices on the bus
    */
