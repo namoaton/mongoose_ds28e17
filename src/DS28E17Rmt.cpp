@@ -28,6 +28,10 @@ DS28E17Rmt::~DS28E17Rmt() {
   }
 }
 
+void DS28E17Rmt::setDeviceAddress(uint8_t* dev_addr){
+    memcpy(deviceAddress,dev_addr,8);
+}
+
 void DS28E17Rmt::setOneWire(OnewireRmt *ow) {
   if (_ownOnewire) {
     delete _ow;
