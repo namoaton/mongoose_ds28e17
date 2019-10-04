@@ -26,7 +26,7 @@ class DS28E17Rmt {
   DS28E17Rmt(uint8_t pin, uint8_t rmt_rx, uint8_t rmt_tx);
 
   ~DS28E17Rmt();
-  static DeviceAddress deviceAddress = {0,0,0,0,0,0,0,0};
+  static DeviceAddress deviceAddress;
     /*
    * The OneWire object
    */
