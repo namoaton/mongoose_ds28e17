@@ -97,9 +97,9 @@ bool  DS28E17Rmt::ow_read_bytes(uint8_t* deviceAddress, uint8_t *command, uint8_
 //    packet_crc(command,len_w);
     int b = _ow->reset();
     if (b == 0) return false;
-    for (int i =0;i<len_w+4;i++){
-        LOG(LL_WARN, ("cmd[%d] = %X",i,cmd_crc[i]));
-    }
+//    for (int i =0;i<len_w+4;i++){
+//        LOG(LL_WARN, ("cmd[%d] = %X",i,cmd_crc[i]));
+//    }
     _ow->select(deviceAddress);
     _ow->write_bytes(cmd_crc,len_w + 2);
     mgos_msleep(10);
