@@ -75,7 +75,10 @@ bool DS28E17Rmt::ow_write_bytes(uint8_t* deviceAddress, uint8_t len, uint8_t *by
     uint8_t  status[2] = {0};
     uint8_t  cmd_crc[len+2];
     memcpy(cmd_crc,bytes,len);
-    packet_crc(bytes,len);
+    packet_crc(cmd_crc,len);
+        for (int i =0;i<len+2;i++){
+        LOG(LL_WARN, ("cmd[%d] = %X",i,cmd_crc[i]));
+    }
     int b = _ow->reset();
     if (b == 0) return false;
     _ow->select(deviceAddress);
