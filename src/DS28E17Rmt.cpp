@@ -120,11 +120,11 @@ bool  DS28E17Rmt::ow_read_bytes(uint8_t* deviceAddress, uint8_t *command, uint8_
         bytes[f] =(read_buffer[f]>>1)|last_bit<<7;
         last_bit =read_buffer[f] & 1;
     }
-//     if (len_r>1) {
-//         for (int i = 0; i < len_r; i++) {
-//             LOG(LL_WARN, ("buffer[%d] = %X", i, bytes[i]));
-//         }
-//     }
+     if (len_r>1) {
+         for (int i = 0; i < len_r; i++) {
+             LOG(LL_WARN, ("buffer[%d] = %X", i, bytes[i]));
+         }
+     }
     return  res;
 }
 // initialise the bus
