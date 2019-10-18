@@ -106,7 +106,7 @@ bool  DS28E17Rmt::ow_read_bytes(uint8_t* deviceAddress, uint8_t *command, uint8_
     _ow->select(deviceAddress);
     _ow->write_bytes(cmd_crc,len_w + 2);
     mgos_msleep(10);
-    _ow->read_bytes(status, 1);
+    _ow->read_bytes(status, 2);
     mgos_msleep(1);
     _ow->read_bytes(read_buffer, len_r);
     b = _ow->reset();
