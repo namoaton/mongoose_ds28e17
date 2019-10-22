@@ -106,6 +106,43 @@ bool  DS28E17Rmt::ow_read_bytes(uint8_t* deviceAddress, uint8_t *command, uint8_
     _ow->select(deviceAddress);
     _ow->write_bytes(cmd_crc,len_w + 2);
     mgos_msleep(10);
+    _ow->read_bytes(status, 1);
+    mgos_msleep(1);
+    _ow->read_bytes(read_buffer, len_r);
+    b = _ow->reset();
+//    memcpy(status,read_bytes,1);
+//    memcpy(bytes,&read_bytes[1],len_r);
+    res = (b == 1);
+    res =check_status(status);
+
+    uint8_t last_bit = 0;
+    for(int f=len_r-1;f>=0;f--){
+        bytes[f] =(read_buffer[f]>>1)|last_bit<<7;
+        last_bit =read_buffer[f] & 1;
+    }
+//     if (len_r>1) {
+//         for (int i = 0; i < len_r; i++) {
+//             LOG(LL_WARN, ("buffer[%d] = %X", i, bytes[i]));
+//         }
+//     }
+    return  res;
+}
+bool  DS28E17Rmt::ow_readw_bytes(uint8_t* deviceAddress, uint8_t *command, uint8_t len_w, uint8_t *bytes, uint8_t len_r){
+    bool res = true;
+    uint8_t  status[2] = {0};
+    uint8_t  read_buffer[len_r]={0};
+    uint8_t  cmd_crc[len_w+2];
+    memcpy(cmd_crc,command,len_w);
+    packet_crc(cmd_crc,len_w);
+//    packet_crc(command,len_w);
+    int b = _ow->reset();
+    if (b == 0) return false;
+//    for (int i =0;i<len_w+4;i++){
+//        LOG(LL_WARN, ("cmd[%d] = %X",i,cmd_crc[i]));
+//    }
+    _ow->select(deviceAddress);
+    _ow->write_bytes(cmd_crc,len_w + 2);
+    mgos_msleep(10);
     _ow->read_bytes(status, 2);
     mgos_msleep(1);
     _ow->read_bytes(read_buffer, len_r);
@@ -256,7 +293,7 @@ bool  DS28E17Rmt::WriteReadDataStop(uint8_t* deviceAddress, uint8_t i2c_addr, ui
     uint8_t command[ len_wr + 4 ] = {Write_Read_Data_Stop, i2c_addr, len_wr};
     memcpy(&command[3],data_wr,len_wr );
     command[len_wr + 3] = len_r;
-    return ow_read_bytes(deviceAddress, command,  len_wr+4, data_r, len_r);
+    return ow_readw_bytes(deviceAddress, command,  len_wr+4, data_r, len_r);
 }
 /*
  * 00b = I 2 C speed set to 100kHz

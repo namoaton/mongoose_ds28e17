@@ -112,6 +112,7 @@ class DS28E17Rmt {
   bool ow_write_bytes(uint8_t* deviceAddress,  uint8_t len, uint8_t *bytes);
   bool ow_read_byte(uint8_t* deviceAddress, uint8_t command, uint8_t *byte);
   bool ow_read_bytes(uint8_t* deviceAddress, uint8_t *command, uint8_t len_w, uint8_t *bytes, uint8_t len_r);
+  bool ow_readw_bytes(uint8_t* deviceAddress, uint8_t *command, uint8_t len_w, uint8_t *bytes, uint8_t len_r);
   bool ow_write_command(uint8_t* deviceAddress, uint8_t command);
 
 
